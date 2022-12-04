@@ -1,0 +1,18 @@
+{
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "initializeCommand": "${localWorkspaceFolder}/.devcontainer/initenv",
+  "settings": {
+    "terminal.integrated.shell.linux": "bash",
+    "go.toolsManagement.checkForUpdates": "off",
+    "go.useLanguageServer": true,
+    "editor.formatOnSave": false,
+    "[go]": {
+      "editor.formatOnSave": true
+    }
+  },
+  "workspaceFolder": "/workspace",
+  "extensions": [
+    "golang.go"
+  ]
+}

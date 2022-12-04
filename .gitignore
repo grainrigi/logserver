@@ -1,0 +1,8 @@
+.devcontainer/dbdata/
+
+node_modules/
+
+.env
+
+logserver
+

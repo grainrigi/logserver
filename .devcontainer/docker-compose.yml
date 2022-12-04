@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  dev:
+    build:
+      context: .
+      args:
+        USERNAME: $USERNAME_
+        UID: $UID
+        GID: $GID
+    stdin_open: true
+    volumes:
+      - ../:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      LOCAL_WORKSPACE_FOLDER: $LOCAL_WORKSPACE_FOLDER
+    ports:
+      - 3000:3000
+  psql:
+    image: postgres:14.5-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=logserver
+      - POSTGRES_USER=logserver
+      - POSTGRES_DB=logserver
+  pgadmin:
+    image: bitnami/phppgadmin
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_HOST=psql
+
+volumes:
+  pgdata:
