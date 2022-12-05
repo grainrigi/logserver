@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Cache node_modules
         id: node_modules_cache_id
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: e2e/node_modules
           key: ${{ hashFiles('e2e/yarn.lock') }}
