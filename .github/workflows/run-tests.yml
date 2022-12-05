@@ -10,7 +10,50 @@ jobs:
           go-version: '1.19'
       - run: go test .
       - run: go build .
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: logserver
           path: logserver
+  e2e-test:
+    needs: unit-test-and-build
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14.5-alpine
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_USER: test
+          POSTGRES_DB: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 1s
+          --health-timeout 0.8s
+          --health-retries 50
+        ports:
+        - 5432:5432
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache node_modules
+        id: node_modules_cache_id
+        uses: actions/cache@v2
+        with:
+          path: e2e/node_modules
+          key: ${{ hashFiles('e2e/yarn.lock') }}
+      - name: Install node_modules
+        if: steps.node_modules_cache_id.outputs.cache-hit != 'true'
+        run: cd e2e && yarn
+      - name: Download logserver
+        uses: actions/download-artifact@v3
+        id: download
+        with:
+          name: logserver
+      - name: Run E2E test
+        env:
+          DB_URL: postgres://test:test@localhost:5432/test?sslmode=disable
+        run: |
+          chmod +x logserver \
+          && cd e2e \
+          && cp test.env .env \
+          && yarn test
+     
+      
