@@ -12,7 +12,8 @@ RUN curl -s https://packagecloud.io/install/repositories/golang-migrate/migrate/
  && apt -y install migrate
 
 RUN apt -y update \
- && apt -y install vim sudo postgresql-client docker docker-compose moreutils
+ && apt -y install vim sudo postgresql-client docker.io moreutils
+
 
 # Go言語ツールのインストール
 RUN go install github.com/uudashr/gopkgs/v2/cmd/gopkgs@latest \
@@ -45,3 +46,9 @@ RUN [ -n "$UID" ] && (cat /tmp/.bashrc >> /home/$USERNAME/.bashrc) \
 
 USER $USERNAME
 WORKDIR /workspace
+
+# docker-composeのインストール
+RUN mkdir -p ~/.docker/cli-plugins/ \
+ && curl -SL https://github.com/docker/compose/releases/download/v2.14.0/docker-compose-linux-x86_64 \
+      -o ~/.docker/cli-plugins/docker-compose \
+ && chmod +x ~/.docker/cli-plugins/docker-compose
