@@ -15,7 +15,7 @@ services:
     environment:
       LOCAL_WORKSPACE_FOLDER: $LOCAL_WORKSPACE_FOLDER
     ports:
-      - 3000:3000
+      - 3030:3030
   psql:
     image: postgres:14.5-alpine
     volumes:

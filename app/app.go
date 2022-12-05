@@ -27,7 +27,7 @@ func Run() {
 
 	port := os.Getenv("HTTP_PORT")
 	if port == "" {
-		port = "3000"
+		port = "3030"
 	}
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))
