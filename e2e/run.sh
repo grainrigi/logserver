@@ -13,6 +13,6 @@ export COMPOSE_PROJECT_NAME=logserver-test
 
 (cd .. && go build .)
 echo 'Preparing test environment...'
-chronic sudo -E docker-compose up -d --build
-sudo -E docker-compose exec tester sh -c 'chronic yarn && yarn test'
-chronic sudo -E docker-compose down
+chronic sudo -E docker compose up -d --build
+sudo -E docker compose exec tester sh -c 'chronic yarn && yarn test'
+chronic sudo -E docker compose down
