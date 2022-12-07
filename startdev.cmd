@@ -4,7 +4,7 @@ cd %~dp0
 
 set COMPOSE_PROJECT_NAME=logserver
 
-if %1==stop (
+if "%1"=="stop" (
   cd .devcontainer
   docker-compose down
   exit
