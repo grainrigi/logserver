@@ -2,7 +2,7 @@
 
 まずはDocker Desktop(Windows, MacOS)またはdockerd(Linux)をインストールしてください。
 
-Linuxでdockerdを使う場合はdocker-composeもインストールしてください。
+Linuxでdockerdを使う場合はdocker-compose(またはdocker compose)もインストールしてください。
 
 ## VSCodeを使う場合(おすすめ)
 
@@ -19,22 +19,13 @@ Linuxでdockerdを使う場合はdocker-composeもインストールしてくだ
 
 ## VSCodeを使わない場合
 
-Windowsの場合は`startdev.bat`を、Linux/MacOSの場合は`startdev.sh`を実行します。
+Windowsの場合は`startdev.cmd`を、Linux/MacOSの場合は`startdev.sh`を実行します。
 
 いずれの場合もDev Container内のシェルが立ち上がります。
 
 # Dev Container内での操作
 
 ## サーバーのコンパイル&実行
-
-はじめに、`go mod tidy`を実行してください。
-必要なパッケージがインストールされます。
-
-```sh
-$ go mod tidy
-```
-
-インストールが完了したらサーバーを実行できます。
 
 ```sh
 $ go run .

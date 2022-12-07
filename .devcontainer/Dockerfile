@@ -37,12 +37,13 @@ RUN [ -n "$UID" ] && (groupadd --gid $GID $USERNAME \
  && useradd --uid $UID --gid $GID -m $USERNAME \
  && echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USERNAME \
  && chmod 0440 /etc/sudoers.d/$USERNAME \
- && chown -R $UID:$GID /go)
+ && chown -R $UID:$GID /go) \
+ || true
 
 # .bashrcの準備
 COPY .bashrc /tmp/.bashrc
 RUN [ -n "$UID" ] && (cat /tmp/.bashrc >> /home/$USERNAME/.bashrc) \
- || (cp /etc/skel/. /root/ && cat /tmp/.bashrc >> /root/.bashrc)
+ || (cp -r /etc/skel/. /root/ && cat /tmp/.bashrc >> /root/.bashrc)
 
 USER $USERNAME
 WORKDIR /workspace

@@ -6,15 +6,28 @@ cd "$dir"
 
 export COMPOSE_PROJECT_NAME=logserver
 
-if [ "$1" = stop ]; then
+# docker-composeの存在確認
+if ! which docker-compose > /dev/null 2>&1; then
+  if ! docker compose version > /dev/null 2>&1; then
+    echo 'Neither "docker-compose" nor "docker compose" is available. Please install one of them.'
+    exit 1
+  else
+    DOCKER_COMPOSE='docker compose'
+  fi
+else
+  DOCKER_COMPOSE=docker-compose
+fi
+
+if [ "$1" == "down" ]; then
   cd .devcontainer
-  docker-compose down
+  ${DOCKER_COMPOSE} down
   exit
 fi
+
 
 ./.devcontainer/initenv
 cd .devcontainer
 
-docker-compose build
-docker-compose up -d
-docker-compose exec dev /bin/bash -i
+${DOCKER_COMPOSE} build
+${DOCKER_COMPOSE} up -d
+${DOCKER_COMPOSE} exec dev /bin/bash -i
