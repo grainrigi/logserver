@@ -2,5 +2,6 @@
 import type { SuperTest, Test } from 'supertest';
 
 declare global {
+  // environ.mjs内でセット(setup.js内で作成)
   var request: SuperTest<Test>;
 }

@@ -38,7 +38,7 @@ describe('operators', () => {
     op.license = 2;
     await request
       .put('/operators/' + opid)
-      .send({ ...op, id: opid })
+      .send(op)
       .expect(204);
     await request
       .get('/operators')
