@@ -19,7 +19,9 @@ const (
 type Log struct {
 	bun.BaseModel `bun:"table:logs"`
 
-	ID         int       `bun:"id,pk,autoincrement" json:"id"`
+	ID        int `bun:"id,pk,autoincrement" json:"id"`
+	ContestID int `bun:"contest,notnull"`
+
 	Time       time.Time `bun:"time,notnull" json:"time"`
 	Call       string    `bun:"call,notnull" json:"call" validate:"required"`
 	RST        string    `bun:"rst,notnull" json:"rst" validate:"required"`

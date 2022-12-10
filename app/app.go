@@ -17,6 +17,11 @@ func Run() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	e.GET("/contests", getContests)
+	e.POST("/contests", postContest)
+	e.PUT("/contests/:id", putContest)
+	e.DELETE("/contests/:id", deleteContest)
+
 	e.GET("/logs", getLogs)
 	e.POST("/logs", postLog)
 

@@ -1,7 +1,9 @@
 package app
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -16,4 +18,18 @@ func BindAndValidate[T any](c echo.Context) (*T, error) {
 		return i, echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 	return i, nil
+}
+
+func IntParam(c echo.Context, name string) (int, error) {
+	i, err := strconv.Atoi(c.Param(name))
+
+	if err != nil {
+		return 0, echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("path param '%s' must be a number", name))
+	}
+
+	return i, nil
+}
+
+type ErrorDTO struct {
+	Error string `json:"error"`
 }
