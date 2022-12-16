@@ -1,7 +1,12 @@
 import { Test, Response } from 'supertest';
+import { cleanupDB } from '../util/common';
 import { v4 as uuidv4 } from 'uuid';
 
 describe('operators', () => {
+  beforeAll(async () => {
+    await cleanupDB();
+  })
+
   const opname = uuidv4();
   const op = { name: opname, license: 1 };
   let opid = 0;
@@ -38,7 +43,7 @@ describe('operators', () => {
     op.license = 2;
     await request
       .put('/operators/' + opid)
-      .send({ ...op, id: opid })
+      .send(op)
       .expect(204);
     await request
       .get('/operators')

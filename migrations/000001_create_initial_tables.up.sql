@@ -40,6 +40,6 @@ CREATE TABLE IF NOT EXISTS logs (
     txrst varchar, --送信RST
     txd varchar,   --送信コンテストナンバー
 
-    foreign key (contest) references contests (id),
+    foreign key (contest) references contests (id) on delete cascade,
     foreign key (op) references operators (id)
 );
