@@ -25,8 +25,6 @@ type Contest struct {
 	Type      ContestType `bun:"type,notnull" json:"type" validate:"required,oneof=1 2"`
 	Cfg       string      `bun:"cfg,notnull" json:"cfg" validate:"required"`
 	Call      string      `bun:"call,notnull" json:"call" validate:"required"`
-
-	Logs *[]Log `bun:"rel:has-many,join:id=contest" json:"logs,omitempty" validate:"-"`
 }
 
 // 入力データやDBからロードしたデータで不完全な部分を修正する

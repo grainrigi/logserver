@@ -1,7 +1,12 @@
 import { Test, Response } from 'supertest';
+import { cleanupDB } from '../util/common';
 import { v4 as uuidv4 } from 'uuid';
 
 describe('operators', () => {
+  beforeAll(async () => {
+    await cleanupDB();
+  })
+
   const opname = uuidv4();
   const op = { name: opname, license: 1 };
   let opid = 0;

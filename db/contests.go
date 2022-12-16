@@ -13,10 +13,10 @@ func ReadContests(ctx context.Context) ([]data.Contest, error) {
 	return cs, err
 }
 
-func ReadContestWithLogs(ctx context.Context, id int) (data.Contest, error) {
+func ReadContest(ctx context.Context, id int) (data.Contest, error) {
 	c := data.Contest{ID: id}
 
-	err := db.NewSelect().Model(&c).Relation("Logs").Scan(ctx)
+	err := db.NewSelect().Model(&c).WherePK().Scan(ctx)
 
 	return c, err
 }
@@ -24,7 +24,6 @@ func ReadContestWithLogs(ctx context.Context, id int) (data.Contest, error) {
 func InsertContest(ctx context.Context, c *data.Contest) (int, error) {
 	var rc data.Contest
 	c.ID = 0
-	c.Logs = nil
 
 	_, err := db.NewInsert().Model(c).Returning("id").Exec(ctx, &rc)
 
@@ -40,8 +39,6 @@ func DeleteContest(ctx context.Context, id int) error {
 }
 
 func UpdateContest(ctx context.Context, c *data.Contest) error {
-	c.Logs = nil
-
 	_, err := db.NewUpdate().Model(c).WherePK().Exec(ctx)
 
 	return err

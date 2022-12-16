@@ -1,5 +1,11 @@
+import { cleanupDB } from '../util/common';
+import { createContest, deleteContest } from '../util/contests';
 
 describe('contests', () => {
+  beforeAll(async () => {
+    await cleanupDB();
+  });
+
   const contest = {
     name: '全市全郡コンテスト',
     startTime: new Date().toISOString(),
@@ -11,15 +17,8 @@ describe('contests', () => {
 
   let id: number;
 
-  it('can be created', () => {
-    return request
-      .post('/contests')
-      .send(contest)
-      .expect(201)
-      .then((res) => {
-        expect(res.body).toEqual({ id: expect.any(Number) });
-        id = res.body.id;
-      });
+  it('can be created', async () => {
+    id = await createContest(contest);
   });
 
   it('cannot be created with invalid value', async () => {
@@ -36,6 +35,14 @@ describe('contests', () => {
       .expect(200)
       .then((res) => {
         expect(res.body).toContainEqual({ ...contest, id });
+      });
+  });
+
+  it('can be solely read', () => {
+    return request
+      .get('/contests/' + id)
+      .then((res) => {
+        expect(res.body).toEqual({ ...contest, id });
       });
   });
 
@@ -69,9 +76,7 @@ describe('contests', () => {
   });
 
   it('can be deleted', async () => {
-    await request
-      .delete('/contests/' + id)
-      .expect(204);
+    await deleteContest(id);
     await request
       .get('/contests')
       .expect(200)

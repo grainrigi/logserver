@@ -18,13 +18,13 @@ func getContests(c echo.Context) error {
 	return c.JSON(http.StatusOK, cs)
 }
 
-func getContestWithLogs(c echo.Context) error {
+func getContest(c echo.Context) error {
 	id, err := IntParam(c, "id")
 	if err != nil {
 		return err
 	}
 
-	contest, err := db.ReadContestWithLogs(c.Request().Context(), id)
+	contest, err := db.ReadContest(c.Request().Context(), id)
 	if err == sql.ErrNoRows {
 		return c.NoContent(http.StatusNotFound)
 	}
@@ -32,13 +32,9 @@ func getContestWithLogs(c echo.Context) error {
 }
 
 func postContest(c echo.Context) error {
-	contest, err := BindAndValidate[data.Contest](c)
+	contest, err := BindAndNormalize[data.Contest](c)
 	if err != nil {
 		return err
-	}
-
-	if err := contest.Normalize(); err != nil {
-		return c.JSON(http.StatusBadRequest, ErrorDTO{Error: err.Error()})
 	}
 
 	id, err := db.InsertContest(c.Request().Context(), contest)
@@ -46,19 +42,13 @@ func postContest(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusCreated, struct {
-		Id int `json:"id"`
-	}{Id: id})
+	return c.JSON(http.StatusCreated, IDDTO{ID: id})
 }
 
 func putContest(c echo.Context) error {
-	contest, err := BindAndValidate[data.Contest](c)
+	contest, err := BindAndNormalize[data.Contest](c)
 	if err != nil {
 		return err
-	}
-
-	if err := contest.Normalize(); err != nil {
-		return c.JSON(http.StatusBadRequest, ErrorDTO{Error: err.Error()})
 	}
 
 	err = db.UpdateContest(c.Request().Context(), contest)
